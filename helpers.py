@@ -41,12 +41,34 @@ def draw(s):
 
 
 # expand a board position with symbol c
+# def expand(s, c):
+#     """returns a list of all next move by c game states"""
+#     nextList = []
+#     for i in range(3):
+#         for j in range(3):
+#             if s[i][j] == " ":
+#                 newState = copy.deepcopy(s)
+#                 newState[i][j] = c
+#                 nextList.append(newState)
+#     return nextList
+
+
+# expand a board position with symbol c; center board move ordering
 def expand(s, c):
-    """returns a list of all next move by c game states"""
+    """returns a list of all next move by c game states, prioritizing the center square"""
     nextList = []
+    # Check and prioritize the center square if available
+    if s[1][1] == " ":
+        newState = copy.deepcopy(s)
+        newState[1][1] = c
+        nextList.append(newState)
+
+    # Generate other moves
     for i in range(3):
         for j in range(3):
-            if s[i][j] == " ":
+            if s[i][j] == " " and not (
+                i == 1 and j == 1
+            ):  # Skip the center since it's already considered
                 newState = copy.deepcopy(s)
                 newState[i][j] = c
                 nextList.append(newState)
