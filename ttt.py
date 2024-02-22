@@ -34,7 +34,7 @@ class TTTGame:
         self.nummoves = 0 # check for board full
         self.message=0    # message field on GUI
         self.makeBoard()  # Start the GUI
-        self.decisionsMade = 0 # keep track of the number of decisions made
+        self.decision_counts = [] # keep track of the number of decisions made
 
     #
     # keeps stats that makes telling a win/loss/draw easier
@@ -78,7 +78,8 @@ class TTTGame:
                 self.message["text"]="     X WINS    "
                 tk.after(5000,tk.quit)
                 return
-            action,status = tttagent.mmsearch(self.state)
+            action,status,decision_count = tttagent.mmsearch(self.state)
+            self.decision_counts.append(decision_count)
             if status and self.board[action[0]][action[1]]["text"]==" ":
                 self.board[action[0]][action[1]]["text"]="O"
                 self.updateCounts(action[0],action[1],-1)
@@ -86,6 +87,7 @@ class TTTGame:
                 self.message["text"]="      O moves      "
                 if self.checkForWin() and self.nummoves<9:
                     self.message["text"]="     O WINS    "
+                    print("Average decisions evaluated: ", round(sum(self.decision_counts)/len(self.decision_counts), 2))
                     tk.after(5000,tk.quit)
                     return
         else:

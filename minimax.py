@@ -60,41 +60,44 @@ def extractmove(a,b):
                 return (i,j)
 
 #minimax MAX step
-def maxval(s):
-    '''do max step on s and return value'''
+def maxval(s, decision_count):
+    '''do max step on s and return value along with updated decision_count'''
     isTerminal,util = terminal(s)
     if isTerminal:
-        return util
+        return util, decision_count
     v = -100 # -ve infinity
     for g in expand(s,'O'):
-        mv = minval(g)
+        decision_count += 1
+        mv, decision_count = minval(g, decision_count)
         if mv>v:
             v = mv
-    return v
+    return v, decision_count
 
 #minimmax MIN step
-def minval(s):
-    '''do min step on s and return value'''
+def minval(s, decision_count):
+    '''do min step on s and return value along with updated decision_count'''
     isTerminal,util = terminal(s)
     if isTerminal:
-        return util
+        return util, decision_count
     v = 100 # +ve infinity
     for g in expand(s,'X'):
-        mv = maxval(g)
+        decision_count += 1
+        mv,decision_count = maxval(g, decision_count)
         if mv<v:
             v = mv
-    return v
+    return v, decision_count
 
 # minimax decision procedure
 # should not already be a winning board
 def minimax(s):
     '''will return the best move for 'O' in current state'''
+    decision_count = 0
     v = -100 # -ve infinity
     move = s
-    for g in expand(s,'O'):
-        mv = minval(g)
+    for g in expand(s, 'O'):
+        mv, decision_count = minval(g, decision_count)
         if mv>v:
             v = mv
             move = g
     action = extractmove(s,move)
-    return action
+    return action, decision_count

@@ -8,9 +8,9 @@ def search(state):
     return (0,0),False # no move
 
 def mmsearch(state):
-    act = mx.minimax(state)
+    act, decision_count = mx.minimax(state)
     print ("Minimax chooses ",act)
     if act!=None:
-        return act,True
-    return (0,0),False # no move
+        return act,True, decision_count
+    return (0,0),False, decision_count # no move
 #
