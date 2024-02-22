@@ -102,6 +102,10 @@ class TTTGame:
             self.message["text"] = "*You cannot Move there*"
         if self.nummoves >= 9:
             self.message["text"] = "     DRAW    "
+            print(
+                "Average decisions evaluated: ",
+                round(sum(self.decision_counts) / len(self.decision_counts), 2),
+            )
             tk.after(5000, tk.quit)
             return
 
