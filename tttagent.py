@@ -1,4 +1,5 @@
 import minimax as mx
+import alphabetapruning as abp
 
 
 def search(state):
@@ -12,6 +13,14 @@ def search(state):
 def mmsearch(state):
     act, decision_count = mx.minimax(state)
     print("Minimax chooses ", act)
+    if act != None:
+        return act, True, decision_count
+    return (0, 0), False, decision_count  # no move
+
+
+def alpha_beta_search(state):
+    act, decision_count = abp.abp_search(state)
+    print("Alpha-Beta chooses ", act)
     if act != None:
         return act, True, decision_count
     return (0, 0), False, decision_count  # no move

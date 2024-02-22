@@ -5,6 +5,7 @@
 
 from tkinter import *
 import tttagent
+import sys
 
 tk = Tk()
 tk.title("Tic-Tac-Toe by Search")
@@ -78,7 +79,10 @@ class TTTGame:
                 self.message["text"] = "     X WINS    "
                 tk.after(5000, tk.quit)
                 return
-            action, status, decision_count = tttagent.mmsearch(self.state)
+            if len(sys.argv) > 1 and sys.argv[1] == "abp":
+                action, status, decision_count = tttagent.alpha_beta_search(self.state)
+            else:
+                action, status, decision_count = tttagent.mmsearch(self.state)
             self.decision_counts.append(decision_count)
             if status and self.board[action[0]][action[1]]["text"] == " ":
                 self.board[action[0]][action[1]]["text"] = "O"
